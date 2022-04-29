@@ -12,7 +12,7 @@ export class LoginRegisterService {
   constructor(private http: HttpClient) {
   }
 
-  private url: string = "https://evojobag.herokuapp.com/api/users";
+  private url: string = "https://experimentosback.herokuapp.com/api/users";
 
   httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
 

@@ -12,7 +12,7 @@ export class PostulantjobsService {
 
   constructor(private http: HttpClient) {}
 
-  private url: string = "https://evojobag.herokuapp.com/api";
+  private url: string = "https://experimentosback.herokuapp.com/api";
 
   httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
 // API Error Handling

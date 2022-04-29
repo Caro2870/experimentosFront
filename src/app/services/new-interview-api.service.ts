@@ -12,9 +12,9 @@ export class NewInterviewApiService {
 
   constructor(private  http: HttpClient) { }
 
-  private url_update: string = "https://evojobag.herokuapp.com/api/postulants"
+  private url_update: string = "https://experimentosback.herokuapp.com/api/postulants"
 
-  private url_postulant_all: string = "https://evojobag.herokuapp.com/api/postulantjobs";
+  private url_postulant_all: string = "https://experimentosback.herokuapp.com/api/postulantjobs";
 
   httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
 

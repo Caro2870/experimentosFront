@@ -12,9 +12,9 @@ import {Postulant} from "../models/postulant";
 export class InterviewApiService {
 
   //Primero se define la ruta basica
-  basePath = 'https://evojobag.herokuapp.com/api/postulants';
+  basePath = 'https://experimentosback.herokuapp.com/api/postulants';
 
-  base = "https://evojobag.herokuapp.com/api/interviews";
+  base = "https://experimentosback.herokuapp.com/api/interviews";
 
   constructor(private http: HttpClient) { }
 

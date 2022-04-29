@@ -8,8 +8,8 @@ import {catchError, retry} from "rxjs/operators";
 })
 export class JobsApiService {
 
-  private url: string = "https://evojobag.herokuapp.com/api/jobOffers"
-  private jobofferEmployeersUrl : string="https://evojobag.herokuapp.com/api/employeers"
+  private url: string = "https://experimentosback.herokuapp.com/api/jobOffers"
+  private jobofferEmployeersUrl : string="https://experimentosback.herokuapp.com/api/employeers"
   httpOptions = {headers: new HttpHeaders({'Content-Type': 'aplication/json','Access-Control-Allow-Origin': '*'})}
 
   handleError(error: HttpErrorResponse): Observable<never>{
