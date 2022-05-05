@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
-import {catchError, retry} from "rxjs/operators";
-import {User} from "../models/user";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { catchError, retry } from "rxjs/operators";
+import { User } from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,9 @@ export class LoginRegisterService {
 
   private url: string = "https://experimentosback.herokuapp.com/api/users";
 
-  httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
+  httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
-// API Error Handling
+  // API Error Handling
 
   handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
@@ -29,6 +29,10 @@ export class LoginRegisterService {
 
   getAllUsers() {
     return this.http.get(`${this.url}`).pipe(retry(2), catchError(this.handleError));
+  }
+
+  getUserByEmail(email: string) {
+    return this.http.get(`${this.url}/email/${email}`);
   }
 
   updateUser(id: number, item: User): Observable<User> {

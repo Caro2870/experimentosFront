@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
-import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
-import {LoginRegisterService} from "../../services/login-register.service";
-import {Router} from "@angular/router";
-import {EmployeerService} from "../../services/employeer.service";
-import {PostulantService} from "../../services/postulant.service";
+import { FormControl, FormGroupDirective, NgForm, Validators } from "@angular/forms";
+import { LoginRegisterService } from "../../services/login-register.service";
+import { Router } from "@angular/router";
+import { EmployeerService } from "../../services/employeer.service";
+import { PostulantService } from "../../services/postulant.service";
 
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import {AuthService} from "../../services/auth.service";
+import { AuthService } from "../../services/auth.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -24,17 +24,17 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class LoginRegisterComponent implements OnInit {
 
-  emailexist!:string
-  passwordexist!:string
-  postulanteOempleador=false
-  validador=false
-  ingresante!:number;
+  emailexist!: string
+  passwordexist!: string
+  postulanteOempleador = false
+  validador = false
+  ingresante!: number;
   fecha = new Date();
   employeer: {}
   postulant: {}
-  constructor(private tokenStorageService: TokenStorageService, private authService: AuthService, private usersApi: LoginRegisterService,private employeerApi: EmployeerService, private postulantApi: PostulantService, private router: Router) {
-    this.employeer={}
-    this.postulant={}
+  constructor(private tokenStorageService: TokenStorageService, private authService: AuthService, private usersApi: LoginRegisterService, private employeerApi: EmployeerService, private postulantApi: PostulantService, private router: Router) {
+    this.employeer = {}
+    this.postulant = {}
   }
   ngOnInit(): void {
   }
@@ -49,74 +49,72 @@ export class LoginRegisterComponent implements OnInit {
   ]);
 
   getAllUsers(): void {
-    this.usersApi.getAllUsers().subscribe((response: any) => {
-
-      console.log('xd',response.content)
-
-      for(var i=0;i<response.content.length;i++){
-        if(response.content[i].email==this.emailexist &&
-          response.content[i].password==this.passwordexist
-
-          ){
-            this.validador=true;
-            this.ingresante= response.content[i].id;
-          }
-
+    this.usersApi.getUserByEmail(this.emailexist).subscribe(
+      (data: any) => {
+        console.log('xd', data)
+        if (data.email == this.emailexist &&
+          data.password == this.passwordexist) {
+          this.validador = true;
+          this.ingresante = data.id;
         }
+
         console.log(this.ingresante);
 
-      if(this.validador){
-        console.clear();
-        this.employeerApi.getEmployeerbyId(this.ingresante).subscribe((responseEmployeer: any ) => {
+        if (this.validador) {
           console.clear();
-          this.employeer=responseEmployeer
-
-          this.authService.login(responseEmployeer).subscribe(
-            data => {
-              console.log('confirm',data);
-
-            },
-            error => {
-              console.clear();
-              console.log('error',error.error.errorMessage);
-
-            }
-          );
-          console.clear();
-        this.router.navigate([`employeer/${this.ingresante}`])
-            .then(() => console.clear());
-
-        });
-
-        this.postulantApi.getPostulantbyId(this.ingresante).subscribe((responsePostulant: any) => {
+          this.employeerApi.getEmployeerbyId(this.ingresante).subscribe((responseEmployeer: any) => {
             console.clear();
-               this.postulant=responsePostulant
+            this.employeer = responseEmployeer
 
-          this.authService.login(responsePostulant).subscribe(
-            data => {
+            this.authService.login(responseEmployeer).subscribe(
+              data => {
+                console.log('confirm', data);
 
-              console.log('confirm',data);
+              },
+              error => {
+                console.clear();
+                console.log('error', error.error.errorMessage);
 
-            },
-            error => {
-              console.log('error',error.error.errorMessage);
-              console.clear();
-            }
-          );
-          this.router.navigate([`postulant/${this.ingresante}`])
-            .then(() => console.clear());
-        })
+              }
+            );
+            console.clear();
+            this.router.navigate([`employeer/${this.ingresante}`])
+              .then(() => console.clear());
 
+          });
+
+          this.postulantApi.getPostulantbyId(this.ingresante).subscribe((responsePostulant: any) => {
+            console.clear();
+            this.postulant = responsePostulant
+            this.authService.login(responsePostulant).subscribe(
+              data => {
+                console.log('confirm', data);
+              },
+              error => {
+                console.log('error', error.error.errorMessage);
+                console.clear();
+              }
+            );
+            this.router.navigate([`postulant/${this.ingresante}`])
+              .then(() => console.clear());
+          })
+
+          console.clear();
+        }
+
+        else {
+          alert("Contraseña incorrecta intentelo nuevamente")
+        }
         console.clear();
-      }
-      else {
+      },
+      error => {
         alert("Contraseña incorrecta intentelo nuevamente")
       }
-      console.clear();
-    });
+    );
   }
-
 
   matcher = new MyErrorStateMatcher();
 
 }
+
+
